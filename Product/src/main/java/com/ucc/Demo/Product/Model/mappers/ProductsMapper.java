@@ -17,6 +17,9 @@ public class ProductsMapper {
         Product productEntity = new Product();
         productEntity.setName(productDTO.getName());
         productEntity.setStock(productDTO.getStock());
+        productEntity.setPrice(productDTO.getPrice());
+        productEntity.setStatus(true);
+        productEntity.setStock(1);
         productEntity.setDescription("creado por mapper");
 
         Category categoryEntity = categoryRepository.findOneById(productDTO.getCategoryDTO().getId());

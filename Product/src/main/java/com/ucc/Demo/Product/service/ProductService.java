@@ -28,45 +28,58 @@ public class ProductService {
     }
 
     public ResponseEntity<Product> newProduct(Product product){
-        productRepository.save(product);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        try {
+            productRepository.save(product);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
     }
 
     // ACTIVIDADEs
     public ResponseEntity<Product> getProductById(Long id){
-        Product product = productRepository.findById(id).orElse(null);
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            Product product = productRepository.findById(id).orElse(null);
+            if (product == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        return new ResponseEntity<>(product, HttpStatus.OK);
     }
-
 
     public ResponseEntity<Product> deleteProduct(Long id){
-        Product productDelete = productRepository.findById(id).orElse(null);
-        if (productDelete == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
-            productRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            Product productDelete = productRepository.findById(id).orElse(null);
+            if (productDelete == null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }else{
+                productRepository.deleteById(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
-
     public ResponseEntity<Product> modifyProduct(Long id, Product product){
-        Product modifiedProduct = productRepository.findById(id).orElse(null);
-
-        if (modifiedProduct == null) {
-           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
-            modifiedProduct.setDescription(product.getDescription());
-            modifiedProduct.setName(product.getName());
-            modifiedProduct.setPrice(product.getPrice());
-            modifiedProduct.setStatus(product.getStatus());
-            modifiedProduct.setStock(product.getStock());
-
-            productRepository.save(modifiedProduct);
-            return new ResponseEntity<>(modifiedProduct, HttpStatus.OK);
+        try {
+            Product modifiedProduct = productRepository.findById(id).orElse(null);
+            if (modifiedProduct == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }else{
+                modifiedProduct.setDescription(product.getDescription());
+                modifiedProduct.setName(product.getName());
+                modifiedProduct.setPrice(product.getPrice());
+                modifiedProduct.setStatus(product.getStatus());
+                modifiedProduct.setStock(product.getStock());
+                productRepository.save(modifiedProduct);
+                return new ResponseEntity<>(modifiedProduct, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     };
 
@@ -82,8 +95,12 @@ public class ProductService {
 
     //Crear Producto desde DTO
     public ResponseEntity<Object> newProductFromDTO(ProductDTO productDTO){
-        Product productEntity = productsMapper.productsDTOToProductsEntity(productDTO);
-        productRepository.save(productEntity);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        try {
+            Product productEntity = productsMapper.productsDTOToProductsEntity(productDTO);
+            productRepository.save(productEntity);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }
