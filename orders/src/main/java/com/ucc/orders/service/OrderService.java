@@ -10,6 +10,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 @Service
 public class OrderService {
@@ -21,7 +23,7 @@ public class OrderService {
     @Value("${product.service.url:http://localhost:8080/api}")
     private String productServiceUrl;
 
-    public OrderService(OrderRepository orderRepository, OrdersMapper  ordersMapper, RestTemplate restTemplate) {
+    public OrderService(OrderRepository orderRepository, OrdersMapper ordersMapper, RestTemplate restTemplate) {
         this.orderRepository = orderRepository;
         this.ordersMapper = ordersMapper;
         this.restTemplate = restTemplate;
@@ -31,19 +33,34 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
-    public ResponseEntity<Order> newOrder(Order order){
+    public ResponseEntity<?> newOrder(Order order){
         // Consultar el stock del producto
         String url = productServiceUrl + "/products/" + order.getProductId();
-        ResponseEntity<ProductResponse> response = restTemplate.getForEntity(url, ProductResponse.class);
-        if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        ResponseEntity<ProductResponse> response;
+
+        try {
+            response = restTemplate.getForEntity(url, ProductResponse.class);
+        } catch (Exception e) {
+            // Si hay un error en la comunicación o el producto no existe
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "El producto con ID " + order.getProductId() + " no existe");
+            return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
         }
+
+
         ProductResponse product = response.getBody();
-        if (product.getStock() == null || product.getStock() <= 0) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Sin stock
+
+
+        if (product.getStock() == null || product.getStock() <= 0 || product.getStock() < order.getStock()) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "El producto con ID " + order.getProductId() + " no tiene stock disponible");
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
+
+
+
         orderRepository.save(order);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
     // Clase interna para mapear la respuesta del producto

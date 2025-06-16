@@ -26,8 +26,8 @@ public class OrderController {
     @PostMapping("api/orders")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Order>newOrders( @RequestBody Order order){
-        return orderService.newOrder(order);
+        return (ResponseEntity<Order>) orderService.newOrder(order);
     }
 
-  
+
 }
