@@ -18,6 +18,8 @@ public class Order {
 
     private String name;
 
+    private Long productId;
+
 
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @JoinColumn(name = "category_id", nullable = false)
