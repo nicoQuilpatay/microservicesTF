@@ -37,12 +37,19 @@ Antes de crear una orden debe se debe crear previamente un producto y especifica
 EJEMPLO PARA CREAR ORDEN:
 <br>
 [
+<br>
   {
+  <br>
     "id": 3,
+    <br>
     "name": "Pedido de Julian",
+    <br>
     "productId": 3, (Aqui se especifica el Id de producto prewviamente creado para verificar si su stock es sufuciente)
+    <br>
     "stock": 6 (Esto se compara con el stock del producto antes de crear la orden)
+    <br>
   }
+  <br>
 ]
 
 
