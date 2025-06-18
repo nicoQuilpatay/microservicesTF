@@ -33,6 +33,17 @@ Permite crear, consultar, modificar y eliminar productos.
 
 📦 Orders Service
 Permite crear órdenes solo si hay stock suficiente. Consulta el stock en Product Service antes de crear la orden.
+Antes de crear una orden debe se debe crear previamente un producto y especificar su stock.
+EJEMPLO PARA CREAR ORDEN:
+
+[
+  {
+    "id": 3,
+    "name": "Pedido de Julian",
+    "productId": 3, (Aqui se especifica el Id de producto prewviamente creado para verificar si su stock es sufuciente)
+    "stock": 6 (Esto se compara con el stock del producto antes de crear la orden)
+  }
+]
 
 
 💫Comunicación entre microservicios
