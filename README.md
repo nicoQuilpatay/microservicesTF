@@ -35,7 +35,7 @@ Permite crear, consultar, modificar y eliminar productos.
 Permite crear órdenes solo si hay stock suficiente. Consulta el stock en Product Service antes de crear la orden.
 Antes de crear una orden debe se debe crear previamente un producto y especificar su stock.
 EJEMPLO PARA CREAR ORDEN:
-
+<br>
 [
   {
     "id": 3,
