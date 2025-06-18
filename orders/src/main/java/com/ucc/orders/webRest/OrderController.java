@@ -29,5 +29,12 @@ public class OrderController {
         return (ResponseEntity<Order>) orderService.newOrder(order);
     }
 
+    @DeleteMapping("/api/orders/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Order> deleteProduct(@PathVariable Long id){
+        return orderService.deleteOrder(id);
+    }
+
+
 
 }

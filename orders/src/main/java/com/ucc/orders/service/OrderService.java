@@ -69,4 +69,19 @@ public class OrderService {
         public Integer getStock() { return stock; }
         public void setStock(Integer stock) { this.stock = stock; }
     }
+
+    public ResponseEntity<Order> deleteOrder(Long id){
+        try {
+            Order orderDelete = orderRepository.findById(id).orElse(null);
+            if (orderDelete == null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }else{
+                orderRepository.deleteById(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }
