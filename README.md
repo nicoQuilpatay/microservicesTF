@@ -44,7 +44,7 @@ EJEMPLO PARA CREAR ORDEN:
     <br>
     "name": "Pedido de Julian",
     <br>
-    "productId": 3, (Aqui se especifica el Id de producto prewviamente creado para verificar si su stock es sufuciente)
+    "productId": 3, (Aqui se especifica el Id de producto previamente creado para verificar si su stock es suficiente)
     <br>
     "stock": 6 (Esto se compara con el stock del producto antes de crear la orden)
     <br>
